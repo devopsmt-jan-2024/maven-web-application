@@ -1,0 +1,31 @@
+pipeline{
+
+agent any
+
+parameters {
+  choice choices: ['development', 'stage', 'master', 'uat', 'qa'], description: 'Select the Branch Name', name: 'BranchName'
+  string defaultValue: 'Devops', description: 'Change the training Name', name: 'TrainingName'
+}
+
+
+tools{
+maven 'maven 3.9.6' 
+}
+
+stages{
+stage('CHeckOutCode'){
+ steps{
+ git branch: "${params.BranchName}", credentialsId: 'fb960c3a-0adb-4293-acac-0decc723fe54', url: 'https://github.com/devopsmt-jan-2024/maven-web-application.git'
+
+sh "The training name is: ${params.TrainingName}"
+}
+}
+
+stage('Build'){
+steps{
+sh "mvn clean package"
+}
+}
+
+}//stages closing
+}//pipeline closing
